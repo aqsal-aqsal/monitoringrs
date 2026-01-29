@@ -8,6 +8,8 @@ use App\Models\User;
 
 class AuthController extends BaseController
 {
+    protected string $layout = 'auth';
+
     public function login(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
