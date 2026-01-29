@@ -8,8 +8,8 @@ class LogAktivitas extends BaseModel
     public function record(int $userId, string $aksi, ?string $detail = null): void
     {
         $this->query(
-            "INSERT INTO {$this->table} (user_id, aksi, detail) VALUES (:user_id, :aksi, :detail)",
-            ['user_id' => $userId, 'aksi' => $aksi, 'detail' => $detail]
+            "INSERT INTO {$this->table} (id_user, aktivitas, waktu) VALUES (:user_id, :aksi, NOW())",
+            ['user_id' => $userId, 'aksi' => $aksi]
         );
     }
 }

@@ -1,47 +1,29 @@
 <?php
 declare(strict_types=1);
 
-session_start();
-
-spl_autoload_register(function ($class) {
-    $prefixes = [
-        'App\\Controllers\\' => __DIR__ . '/../app/controllers/',
-        'App\\Models\\' => __DIR__ . '/../app/models/',
-        'App\\Middleware\\' => __DIR__ . '/../app/middleware/',
-        'App\\Helpers\\' => __DIR__ . '/../app/helpers/',
-        'Config\\' => __DIR__ . '/../config/',
-    ];
-    foreach ($prefixes as $prefix => $baseDir) {
-        $len = strlen($prefix);
-        if (strncmp($prefix, $class, $len) !== 0) {
-            continue;
-        }
-        $relativeClass = substr($class, $len);
-        $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
-        if (is_file($file)) {
-            require $file;
-            return;
-        }
-    }
-});
+require __DIR__ . '/../app/bootstrap.php';
 
 use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
+use App\Controllers\HomeController;
 use App\Helpers\Auth;
+use App\Helpers\Url;
 
 $method = $_SERVER['REQUEST_METHOD'];
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/';
+$reqPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/';
+$base = Url::base();
+$path = $reqPath;
+if ($base && str_starts_with($reqPath, $base)) {
+    $path = substr($reqPath, strlen($base));
+    if ($path === '' || $path === false) {
+        $path = '/';
+    }
+}
+$path = ($path !== '/') ? rtrim($path, '/') : $path;
 
 $routes = [
     'GET' => [
-        '/' => function () {
-            if (Auth::check()) {
-                header('Location: /dashboard');
-            } else {
-                header('Location: /login');
-            }
-            exit;
-        },
+        '/' => [HomeController::class, 'index'],
         '/login' => [AuthController::class, 'login'],
         '/logout' => [AuthController::class, 'logout'],
         '/dashboard' => [DashboardController::class, 'index'],

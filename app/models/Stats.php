@@ -7,25 +7,25 @@ class Stats extends BaseModel
 
     public function totalBarang(): int
     {
-        $row = $this->query("SELECT COUNT(*) AS c FROM barang WHERE deleted_at IS NULL")->fetch();
+        $row = $this->query("SELECT COUNT(*) AS c FROM barang")->fetch();
         return (int)($row['c'] ?? 0);
     }
 
     public function totalRusak(): int
     {
-        $row = $this->query("SELECT COUNT(*) AS c FROM barang WHERE status = 'RUSAK' AND deleted_at IS NULL")->fetch();
+        $row = $this->query("SELECT COUNT(*) AS c FROM barang WHERE status_barang = 'rusak'")->fetch();
         return (int)($row['c'] ?? 0);
     }
 
     public function totalMaintenance(): int
     {
-        $row = $this->query("SELECT COUNT(*) AS c FROM maintenance WHERE status IN ('DIPROSES','JADWAL') AND deleted_at IS NULL")->fetch();
+        $row = $this->query("SELECT COUNT(*) AS c FROM maintenance WHERE status IN ('terjadwal')")->fetch();
         return (int)($row['c'] ?? 0);
     }
 
     public function totalLaporanBaru(): int
     {
-        $row = $this->query("SELECT COUNT(*) AS c FROM laporan_kerusakan WHERE status = 'BARU' AND deleted_at IS NULL")->fetch();
+        $row = $this->query("SELECT COUNT(*) AS c FROM laporan_kerusakan WHERE status = 'menunggu'")->fetch();
         return (int)($row['c'] ?? 0);
     }
 }

@@ -8,10 +8,10 @@ class User extends BaseModel
     public function findByUsername(string $username): ?array
     {
         $stmt = $this->query(
-            "SELECT u.id, u.username, u.password_hash, r.name AS role_name, u.ruangan_id
+            "SELECT u.id_user AS id, u.username, u.password AS password_hash, r.nama_role AS role_name, NULL AS ruangan_id
              FROM users u
-             JOIN roles r ON r.id = u.role_id
-             WHERE u.username = :username AND u.deleted_at IS NULL",
+             JOIN roles r ON r.id_role = u.id_role
+             WHERE u.username = :username",
             ['username' => $username]
         );
         $row = $stmt->fetch();

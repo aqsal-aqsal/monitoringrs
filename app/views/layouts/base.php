@@ -19,8 +19,11 @@ $title = $title ?? 'Monitoring Inventaris RS';
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="font-semibold">Monitoring Inventaris RS</div>
       <nav class="flex items-center gap-3">
-        <a href="/dashboard" class="hover:underline">Dashboard</a>
-        <a href="/logout" class="bg-white text-blue-600 px-3 py-1 rounded">Keluar</a>
+        <?php
+        $base = \App\Helpers\Url::base();
+        ?>
+        <a href="<?= $base ?>/dashboard" class="hover:underline">Dashboard</a>
+        <a href="<?= $base ?>/logout" class="bg-white text-blue-600 px-3 py-1 rounded">Keluar</a>
       </nav>
     </div>
   </header>

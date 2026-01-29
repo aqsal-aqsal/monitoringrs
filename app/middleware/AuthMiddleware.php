@@ -1,12 +1,14 @@
 <?php
 namespace App\Middleware;
 
+use App\Helpers\Url;
+
 class AuthMiddleware
 {
     public static function requireAuth(): void
     {
         if (!isset($_SESSION['user'])) {
-            header('Location: /login');
+            header('Location: ' . Url::to('/login'));
             exit;
         }
     }

@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Helpers\Auth;
+use App\Helpers\Url;
 use App\Models\LogAktivitas;
 use App\Models\User;
 
@@ -33,7 +34,7 @@ class AuthController extends BaseController
         ]);
 
         (new LogAktivitas())->record((int)$user['id'], 'login', null);
-        header('Location: /dashboard');
+        header('Location: ' . Url::to('/dashboard'));
         exit;
     }
 
@@ -44,7 +45,7 @@ class AuthController extends BaseController
             (new LogAktivitas())->record((int)$u['id'], 'logout', null);
         }
         Auth::logout();
-        header('Location: /login');
+        header('Location: ' . Url::to('/login'));
         exit;
     }
 }
