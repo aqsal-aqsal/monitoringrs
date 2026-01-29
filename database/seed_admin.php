@@ -7,6 +7,16 @@ use Config\Database;
 
 $db = Database::connection();
 
+$roles = ['ADMIN','TEKNISI','PETUGAS_RUANGAN'];
+foreach ($roles as $rname) {
+    $rstmt = $db->prepare("SELECT id_role FROM roles WHERE nama_role = :n");
+    $rstmt->execute(['n' => $rname]);
+    $rid = (int)($rstmt->fetch()['id_role'] ?? 0);
+    if ($rid === 0) {
+        $db->prepare("INSERT INTO roles (nama_role, created_at) VALUES (:n, NOW())")->execute(['n' => $rname]);
+    }
+}
+
 $exists = $db->prepare("SELECT id_user FROM users WHERE username = :u");
 $exists->execute(['u' => 'admin']);
 $row = $exists->fetch();

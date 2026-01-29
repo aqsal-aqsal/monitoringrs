@@ -6,6 +6,8 @@ use App\Models\Stats;
 
 class DashboardController extends BaseController
 {
+    protected string $layout = 'dashboard';
+
     public function index(): void
     {
         AuthMiddleware::requireAuth();

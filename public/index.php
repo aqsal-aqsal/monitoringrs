@@ -6,6 +6,11 @@ require __DIR__ . '/../app/bootstrap.php';
 use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
+use App\Controllers\KategoriController;
+use App\Controllers\RuanganController;
+use App\Controllers\BarangController;
+use App\Controllers\LaporanController;
+use App\Controllers\MaintenanceController;
 use App\Helpers\Auth;
 use App\Helpers\Url;
 
@@ -27,9 +32,33 @@ $routes = [
         '/login' => [AuthController::class, 'login'],
         '/logout' => [AuthController::class, 'logout'],
         '/dashboard' => [DashboardController::class, 'index'],
+        '/master/kategori' => [KategoriController::class, 'index'],
+        '/master/kategori/create' => [KategoriController::class, 'create'],
+        '/master/kategori/edit' => [KategoriController::class, 'edit'],
+        '/master/ruangan' => [RuanganController::class, 'index'],
+        '/master/ruangan/create' => [RuanganController::class, 'create'],
+        '/master/ruangan/edit' => [RuanganController::class, 'edit'],
+        '/master/barang' => [BarangController::class, 'index'],
+        '/master/barang/create' => [BarangController::class, 'create'],
+        '/master/barang/edit' => [BarangController::class, 'edit'],
+        '/laporan/saya' => [LaporanController::class, 'my'],
+        '/laporan/create' => [LaporanController::class, 'create'],
+        '/laporan/admin' => [LaporanController::class, 'adminIndex'],
+        '/maintenance' => [MaintenanceController::class, 'index'],
+        '/maintenance/schedule' => [MaintenanceController::class, 'scheduleForm'],
     ],
     'POST' => [
         '/login' => [AuthController::class, 'login'],
+        '/master/kategori/store' => [KategoriController::class, 'store'],
+        '/master/kategori/update' => [KategoriController::class, 'update'],
+        '/master/ruangan/store' => [RuanganController::class, 'store'],
+        '/master/ruangan/update' => [RuanganController::class, 'update'],
+        '/master/barang/store' => [BarangController::class, 'store'],
+        '/master/barang/update' => [BarangController::class, 'update'],
+        '/laporan/store' => [LaporanController::class, 'store'],
+        '/laporan/update_status' => [LaporanController::class, 'updateStatus'],
+        '/maintenance/store' => [MaintenanceController::class, 'scheduleStore'],
+        '/maintenance/update' => [MaintenanceController::class, 'updateResult'],
     ],
 ];
 

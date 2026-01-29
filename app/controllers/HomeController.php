@@ -5,6 +5,9 @@ class HomeController extends BaseController
 {
     public function index(): void
     {
-        $this->render('home/index', ['title' => 'Rumah Sakit']);
+        $this->render('home/index', [
+            'title' => 'Monitoring Inventaris RS',
+            'fullWidth' => true
+        ]);
     }
 }

@@ -8,6 +8,7 @@ abstract class BaseModel
 {
     protected PDO $db;
     protected string $table;
+    protected string $idColumn = 'id';
 
     public function __construct()
     {
@@ -23,14 +24,14 @@ abstract class BaseModel
 
     public function findById(int $id): ?array
     {
-        $stmt = $this->query("SELECT * FROM {$this->table} WHERE id = :id AND deleted_at IS NULL", ['id' => $id]);
+        $stmt = $this->query("SELECT * FROM {$this->table} WHERE {$this->idColumn} = :id", ['id' => $id]);
         $row = $stmt->fetch();
         return $row ?: null;
     }
 
     public function all(): array
     {
-        $stmt = $this->query("SELECT * FROM {$this->table} WHERE deleted_at IS NULL");
+        $stmt = $this->query("SELECT * FROM {$this->table}");
         return $stmt->fetchAll();
     }
 }
