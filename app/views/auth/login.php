@@ -5,11 +5,7 @@ $title = 'Masuk';
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <!-- Logo Icon -->
         <div class="flex justify-center">
-            <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-sm">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                </div>
-            </div>
+            <img src="<?= \App\Helpers\Url::base() ?>/img/rslogo.png" alt="Logo" class="h-20 w-auto object-contain">
         </div>
         
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">

@@ -33,10 +33,8 @@ $base = \App\Helpers\Url::base();
     <!-- Logo -->
     <div class="h-16 flex items-center px-6">
         <div class="font-bold text-xl tracking-tight flex items-center gap-2 text-gray-900">
-            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-sm">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            </div>
-            SimRS
+            <img src="<?= $base ?>/img/rslogo.png" alt="Logo" class="w-8 h-8 object-contain">
+            HOSMON
         </div>
     </div>
 
@@ -77,6 +75,10 @@ $base = \App\Helpers\Url::base();
             <a href="<?= $base ?>/master/ruangan" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 <?= strpos($_SERVER['REQUEST_URI'], '/master/ruangan') !== false ? 'bg-gray-50 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' ?>">
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
                 Data Ruangan
+            </a>
+            <a href="<?= $base ?>/master/users" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 <?= strpos($_SERVER['REQUEST_URI'], '/master/users') !== false ? 'bg-gray-50 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' ?>">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                Data Pengguna
             </a>
         </div>
         <?php endif; ?>
@@ -140,7 +142,7 @@ $base = \App\Helpers\Url::base();
     
     <!-- Mobile Header -->
     <header class="bg-white border-b border-gray-200 md:hidden flex items-center justify-between p-4">
-        <div class="font-bold text-lg text-gray-800">SimRS</div>
+        <div class="font-bold text-lg text-gray-800">HOSMON</div>
         <button onclick="document.querySelector('aside').classList.toggle('hidden'); document.querySelector('aside').classList.toggle('absolute'); document.querySelector('aside').classList.toggle('z-50'); document.querySelector('aside').classList.toggle('h-full');" class="text-gray-600">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
         </button>

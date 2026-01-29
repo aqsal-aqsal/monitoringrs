@@ -46,7 +46,7 @@ $base = \App\Helpers\Url::base();
                             <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
                             <div class="w-3 h-3 rounded-full bg-green-500"></div>
                         </div>
-                        <div class="flex-1 text-center text-xs text-gray-500 font-mono">dashboard.monitor-rs.local</div>
+                        <div class="flex-1 text-center text-xs text-gray-500 font-mono">dashboard.hosmon.local</div>
                     </div>
                     <!-- Mockup Content -->
                     <div class="bg-gray-900 p-6 rounded-b-xl">

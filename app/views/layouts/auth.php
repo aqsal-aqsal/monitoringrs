@@ -1,11 +1,13 @@
 <?php
 $title = $title ?? 'Masuk';
+$base = \App\Helpers\Url::base();
 ?><!doctype html>
 <html lang="id">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= htmlspecialchars($title) ?></title>
+  <link rel="icon" type="image/png" href="<?= $base ?>/img/rslogo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -21,7 +23,7 @@ $title = $title ?? 'Masuk';
   </main>
 
   <footer class="max-w-7xl mx-auto px-4 py-6 text-sm text-gray-500 text-center w-full">
-    <div>© 2026 Rumah Sakit • Monitoring & Inventaris</div>
+    <div>© 2026 HOSMON • Hospital Monitoring System</div>
   </footer>
 
 </body>
