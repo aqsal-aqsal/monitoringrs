@@ -15,15 +15,20 @@ class MaintenanceController extends BaseController
     public function index(): void
     {
         AuthMiddleware::requireRole(['ADMIN', 'TEKNISI']);
-        $list = (new Maintenance())->all();
-        $this->render('maintenance/index', ['items' => $list, 'title' => 'Maintenance']);
-    }
+        $model = new Maintenance();
+        $list = $model->getAll();
+        
+        // Load Barangs for Modal (Only if Admin)
+        $barangs = [];
+        if (Auth::user()['role_name'] === 'ADMIN') {
+            $barangs = (new Barang())->getAll();
+        }
 
-    public function scheduleForm(): void
-    {
-        AuthMiddleware::requireRole(['ADMIN']);
-        $barangs = (new Barang())->all();
-        $this->render('maintenance/schedule', ['title' => 'Jadwalkan Maintenance', 'barangs' => $barangs]);
+        $this->render('maintenance/index', [
+            'items' => $list, 
+            'title' => 'Maintenance',
+            'barangs' => $barangs
+        ]);
     }
 
     public function scheduleStore(): void
@@ -32,6 +37,12 @@ class MaintenanceController extends BaseController
         $barangId = (int)($_POST['id_barang'] ?? 0);
         $tanggal = $_POST['tanggal_jadwal'] ?? date('Y-m-d');
         $teknisi = $_POST['teknisi'] ?? 'Teknisi';
+        
+        if ($barangId === 0 || empty($tanggal)) {
+            header('Location: ' . Url::to('/maintenance'));
+            exit;
+        }
+
         (new Maintenance())->schedule($barangId, $tanggal, $teknisi);
         (new LogAktivitas())->record(Auth::user()['id'], 'maintenance.schedule');
         header('Location: ' . Url::to('/maintenance'));
@@ -45,8 +56,21 @@ class MaintenanceController extends BaseController
         $hasil = $_POST['hasil'] ?? null;
         $status = $_POST['status'] ?? 'selesai';
         $tanggal = $_POST['tanggal_realisasi'] ?? date('Y-m-d');
+        
         (new Maintenance())->updateResult($id, $hasil, $status, $tanggal);
         (new LogAktivitas())->record(Auth::user()['id'], 'maintenance.update');
+        header('Location: ' . Url::to('/maintenance'));
+        exit;
+    }
+
+    public function delete(): void
+    {
+        AuthMiddleware::requireRole(['ADMIN']);
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id > 0) {
+            (new Maintenance())->delete($id);
+            (new LogAktivitas())->record(Auth::user()['id'], 'maintenance.delete');
+        }
         header('Location: ' . Url::to('/maintenance'));
         exit;
     }

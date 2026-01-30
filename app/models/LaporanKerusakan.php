@@ -22,8 +22,22 @@ class LaporanKerusakan extends BaseModel
 
     public function byUser(int $userId): array
     {
-        $stmt = $this->query("SELECT * FROM {$this->table} WHERE id_user = :u ORDER BY tanggal_lapor DESC", ['u' => $userId]);
-        return $stmt->fetchAll();
+        $sql = "SELECT l.*, b.nama_barang, b.kode_barang
+                FROM {$this->table} l
+                JOIN barang b ON l.id_barang = b.id_barang
+                WHERE l.id_user = :u 
+                ORDER BY l.tanggal_lapor DESC";
+        return $this->query($sql, ['u' => $userId])->fetchAll();
+    }
+
+    public function getAll(): array
+    {
+        $sql = "SELECT l.*, b.nama_barang, b.kode_barang, u.nama as nama_pelapor, u.unit
+                FROM {$this->table} l
+                JOIN barang b ON l.id_barang = b.id_barang
+                JOIN users u ON l.id_user = u.id_user
+                ORDER BY l.tanggal_lapor DESC";
+        return $this->query($sql)->fetchAll();
     }
 
     public function getRecent(int $limit = 5): array
