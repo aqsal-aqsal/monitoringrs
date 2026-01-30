@@ -1,6 +1,8 @@
 <?php
 $title = 'Daftar Pengguna';
 $users = $users ?? [];
+$roles = $roles ?? [];
+$ruanganList = $ruanganList ?? [];
 $base = \App\Helpers\Url::base();
 ?>
 
@@ -12,12 +14,19 @@ $base = \App\Helpers\Url::base();
             <p class="mt-1 text-sm text-gray-500">Kelola akses pengguna sistem monitoring.</p>
         </div>
         <div>
-            <a href="<?= $base ?>/master/users/create" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <button onclick="openModal('create')" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                 Tambah Pengguna
-            </a>
+            </button>
         </div>
     </div>
+
+    <?php if (isset($_GET['error'])): ?>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Error!</strong>
+            <span class="block sm:inline"><?= htmlspecialchars($_GET['error']) ?></span>
+        </div>
+    <?php endif; ?>
 
     <!-- Table Card -->
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
@@ -93,7 +102,7 @@ $base = \App\Helpers\Url::base();
                                 </td>
                                 <td class="px-6 py-4 text-right text-sm font-medium">
                                     <div class="flex items-center justify-end gap-3">
-                                        <a href="<?= $base ?>/master/users/edit?id=<?= $u['id_user'] ?>" class="text-blue-600 hover:text-blue-900 font-semibold">Edit</a>
+                                        <button onclick='openModal("edit", <?= htmlspecialchars(json_encode($u), ENT_QUOTES, 'UTF-8') ?>)' class="text-blue-600 hover:text-blue-900 font-semibold">Edit</button>
                                         <form action="<?= $base ?>/master/users/delete" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini?');">
                                             <input type="hidden" name="id" value="<?= $u['id_user'] ?>">
                                             <button type="submit" class="text-red-600 hover:text-red-900 font-semibold">Hapus</button>
@@ -117,3 +126,134 @@ $base = \App\Helpers\Url::base();
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div id="userModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="closeModal()"></div>
+
+        <!-- Modal panel -->
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Tambah Pengguna</h3>
+                        <div class="mt-4">
+                            <form id="userForm" method="POST" class="space-y-4">
+                                <input type="hidden" name="id" id="userId">
+                                
+                                <!-- Nama -->
+                                <div>
+                                    <label for="nama" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                                    <input type="text" name="nama" id="nama" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border px-3 py-2">
+                                </div>
+
+                                <!-- Username -->
+                                <div>
+                                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                                    <input type="text" name="username" id="username" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border px-3 py-2">
+                                </div>
+
+                                <!-- Password -->
+                                <div>
+                                    <label for="password" class="block text-sm font-medium text-gray-700" id="passwordLabel">Password</label>
+                                    <input type="password" name="password" id="password" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border px-3 py-2">
+                                    <p class="mt-1 text-xs text-gray-500 hidden" id="passwordHelp">Kosongkan jika tidak ingin mengubah password.</p>
+                                </div>
+
+                                <!-- Role & Unit Grid -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <!-- Role -->
+                                    <div>
+                                        <label for="id_role" class="block text-sm font-medium text-gray-700">Role</label>
+                                        <select id="id_role" name="id_role" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md border">
+                                            <option value="">Pilih Role</option>
+                                            <?php foreach ($roles as $r): ?>
+                                                <option value="<?= $r['id_role'] ?>"><?= $r['nama_role'] ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+
+                                    <!-- Unit -->
+                                    <div>
+                                        <label for="unit" class="block text-sm font-medium text-gray-700">Unit</label>
+                                        <input type="text" name="unit" id="unit" list="list-ruangan" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border px-3 py-2">
+                                        <datalist id="list-ruangan">
+                                            <?php foreach ($ruanganList as $ruang): ?>
+                                                <option value="<?= htmlspecialchars($ruang['nama_ruangan']) ?>"></option>
+                                            <?php endforeach; ?>
+                                        </datalist>
+                                    </div>
+                                </div>
+
+                                <!-- Status (Only for Edit) -->
+                                <div id="statusField" class="hidden">
+                                    <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                                    <select id="status" name="status" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md border">
+                                        <option value="aktif">Aktif</option>
+                                        <option value="nonaktif">Nonaktif</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" onclick="document.getElementById('userForm').submit()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" id="saveButton">
+                    Simpan
+                </button>
+                <button type="button" onclick="closeModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openModal(mode, data = null) {
+    const modal = document.getElementById('userModal');
+    const form = document.getElementById('userForm');
+    const title = document.getElementById('modal-title');
+    const saveBtn = document.getElementById('saveButton');
+    const passwordHelp = document.getElementById('passwordHelp');
+    const statusField = document.getElementById('statusField');
+    const passwordInput = document.getElementById('password');
+
+    modal.classList.remove('hidden');
+
+    if (mode === 'create') {
+        title.innerText = 'Tambah Pengguna Baru';
+        form.action = '<?= $base ?>/master/users/store';
+        form.reset();
+        document.getElementById('userId').value = '';
+        passwordInput.required = true;
+        passwordHelp.classList.add('hidden');
+        statusField.classList.add('hidden');
+        saveBtn.innerText = 'Simpan';
+    } else {
+        title.innerText = 'Edit Pengguna';
+        form.action = '<?= $base ?>/master/users/update';
+        
+        document.getElementById('userId').value = data.id_user;
+        document.getElementById('nama').value = data.nama;
+        document.getElementById('username').value = data.username;
+        document.getElementById('id_role').value = data.id_role;
+        document.getElementById('unit').value = data.unit || '';
+        document.getElementById('status').value = data.status;
+        
+        passwordInput.value = '';
+        passwordInput.required = false;
+        passwordHelp.classList.remove('hidden');
+        statusField.classList.remove('hidden');
+        saveBtn.innerText = 'Update';
+    }
+}
+
+function closeModal() {
+    document.getElementById('userModal').classList.add('hidden');
+}
+</script>

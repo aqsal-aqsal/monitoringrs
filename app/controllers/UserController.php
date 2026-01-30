@@ -36,21 +36,12 @@ class UserController extends BaseController
         $this->ensureAdmin();
         
         $users = $this->userModel->getAll();
-        
-        $this->render('users/index', [
-            'users' => $users
-        ]);
-    }
-
-    public function create(): void
-    {
-        $this->ensureAdmin();
-        
         $roles = $this->userModel->getRoles();
         $ruanganModel = new Ruangan();
         $ruanganList = $ruanganModel->all();
         
-        $this->render('users/create', [
+        $this->render('users/index', [
+            'users' => $users,
             'roles' => $roles,
             'ruanganList' => $ruanganList
         ]);
@@ -74,7 +65,7 @@ class UserController extends BaseController
         // Validasi sederhana
         if (empty($nama) || empty($username) || empty($password) || empty($id_role)) {
             // TODO: Handle error with flash message
-            header('Location: ' . Url::to('/master/users/create?error=Field wajib diisi'));
+            header('Location: ' . Url::to('/master/users?error=Field wajib diisi'));
             exit;
         }
 
@@ -89,33 +80,6 @@ class UserController extends BaseController
 
         header('Location: ' . Url::to('/master/users'));
         exit;
-    }
-
-    public function edit(): void
-    {
-        $this->ensureAdmin();
-        
-        $id = $_GET['id'] ?? null;
-        if (!$id) {
-            header('Location: ' . Url::to('/master/users'));
-            exit;
-        }
-
-        $user = $this->userModel->find((int)$id);
-        if (!$user) {
-            header('Location: ' . Url::to('/master/users'));
-            exit;
-        }
-
-        $roles = $this->userModel->getRoles();
-        $ruanganModel = new Ruangan();
-        $ruanganList = $ruanganModel->all();
-
-        $this->render('users/edit', [
-            'user' => $user,
-            'roles' => $roles,
-            'ruanganList' => $ruanganList
-        ]);
     }
 
     public function update(): void

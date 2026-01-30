@@ -6,6 +6,16 @@ class Barang extends BaseModel
     protected string $table = 'barang';
     protected string $idColumn = 'id_barang';
 
+    public function getAll(): array
+    {
+        $sql = "SELECT b.*, k.nama_kategori, r.nama_ruangan, r.gedung 
+                FROM {$this->table} b
+                LEFT JOIN kategori_barang k ON b.id_kategori = k.id_kategori
+                LEFT JOIN ruangan r ON b.id_ruangan = r.id_ruangan
+                ORDER BY b.created_at DESC";
+        return $this->query($sql)->fetchAll();
+    }
+
     public function create(array $data): int
     {
         $this->query(

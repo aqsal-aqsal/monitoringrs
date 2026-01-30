@@ -34,4 +34,9 @@ abstract class BaseModel
         $stmt = $this->query("SELECT * FROM {$this->table}");
         return $stmt->fetchAll();
     }
+
+    public function delete(int $id): void
+    {
+        $this->query("DELETE FROM {$this->table} WHERE {$this->idColumn} = :id", ['id' => $id]);
+    }
 }

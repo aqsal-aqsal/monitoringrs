@@ -17,16 +17,15 @@ class BarangController extends BaseController
     {
         AuthMiddleware::requireRole(['ADMIN']);
         $model = new Barang();
-        $list = $model->all();
-        $this->render('master/barang/index', ['items' => $list, 'title' => 'Barang']);
-    }
-
-    public function create(): void
-    {
-        AuthMiddleware::requireRole(['ADMIN']);
+        $list = $model->getAll();
         $kats = (new KategoriBarang())->all();
         $ruangs = (new Ruangan())->all();
-        $this->render('master/barang/form', ['title' => 'Tambah Barang', 'item' => null, 'kats' => $kats, 'ruangs' => $ruangs]);
+        $this->render('master/barang/index', [
+            'items' => $list, 
+            'title' => 'Barang',
+            'kats' => $kats,
+            'ruangs' => $ruangs
+        ]);
     }
 
     public function store(): void
@@ -42,21 +41,17 @@ class BarangController extends BaseController
             'nilai_aset' => $_POST['nilai_aset'] ?? null,
             'status_barang' => $_POST['status_barang'] ?? 'baik',
         ];
+        
+        if (empty($data['kode_barang']) || empty($data['nama_barang'])) {
+             // TODO: Handle error nicely
+             header('Location: ' . Url::to('/master/barang'));
+             exit;
+        }
+
         (new Barang())->create($data);
         (new LogAktivitas())->record(Auth::user()['id'], 'barang.create');
         header('Location: ' . Url::to('/master/barang'));
         exit;
-    }
-
-    public function edit(): void
-    {
-        AuthMiddleware::requireRole(['ADMIN']);
-        $id = (int)($_GET['id'] ?? 0);
-        $model = new Barang();
-        $item = $model->findById($id);
-        $kats = (new KategoriBarang())->all();
-        $ruangs = (new Ruangan())->all();
-        $this->render('master/barang/form', ['title' => 'Edit Barang', 'item' => $item, 'kats' => $kats, 'ruangs' => $ruangs]);
     }
 
     public function update(): void
@@ -75,6 +70,16 @@ class BarangController extends BaseController
         ];
         (new Barang())->updateById($id, $data);
         (new LogAktivitas())->record(Auth::user()['id'], 'barang.update');
+        header('Location: ' . Url::to('/master/barang'));
+        exit;
+    }
+
+    public function delete(): void
+    {
+        AuthMiddleware::requireRole(['ADMIN']);
+        $id = (int)($_POST['id'] ?? 0);
+        (new Barang())->delete($id);
+        (new LogAktivitas())->record(Auth::user()['id'], 'barang.delete');
         header('Location: ' . Url::to('/master/barang'));
         exit;
     }
