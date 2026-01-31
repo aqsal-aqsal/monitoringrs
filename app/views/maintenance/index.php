@@ -110,7 +110,7 @@ $role = $user['role_name'] ?? '';
         <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Jadwalkan Maintenance</h3>
-                <form id="scheduleForm" action="<?= $base ?>/maintenance/scheduleStore" method="POST" class="space-y-4">
+                <form id="scheduleForm" action="<?= $base ?>/maintenance/store" method="POST" class="space-y-4">
                     <div>
                         <label for="id_barang" class="block text-sm font-medium text-gray-700">Pilih Barang</label>
                         <select name="id_barang" id="id_barang" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md border">
@@ -152,7 +152,7 @@ $role = $user['role_name'] ?? '';
         <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Update Hasil Maintenance</h3>
-                <form id="updateForm" action="<?= $base ?>/maintenance/updateResult" method="POST" class="space-y-4">
+                <form id="updateForm" action="<?= $base ?>/maintenance/update" method="POST" class="space-y-4">
                     <input type="hidden" name="id" id="updateId">
                     
                     <div>
