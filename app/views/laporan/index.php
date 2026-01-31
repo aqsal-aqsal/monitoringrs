@@ -118,4 +118,12 @@ function openModal() {
 function closeModal() {
     document.getElementById('laporanModal').classList.add('hidden');
 }
+
+// Check for action=create in URL
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('action') === 'create') {
+        openModal();
+    }
+});
 </script>

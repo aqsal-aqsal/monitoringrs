@@ -87,11 +87,11 @@ $base = \App\Helpers\Url::base();
             <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Operasional</p>
             
             <?php if ($role === 'PETUGAS_RUANGAN'): ?>
-            <a href="<?= $base ?>/laporan/create" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 <?= strpos($_SERVER['REQUEST_URI'], '/laporan/create') !== false ? 'bg-gray-50 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' ?>">
+            <a href="<?= $base ?>/laporan/saya?action=create" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 <?= strpos($_SERVER['REQUEST_URI'], 'action=create') !== false ? 'bg-gray-50 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' ?>">
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 Buat Laporan
             </a>
-            <a href="<?= $base ?>/laporan/saya" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 <?= strpos($_SERVER['REQUEST_URI'], '/laporan/saya') !== false ? 'bg-gray-50 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' ?>">
+            <a href="<?= $base ?>/laporan/saya" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 <?= (strpos($_SERVER['REQUEST_URI'], '/laporan/saya') !== false && strpos($_SERVER['REQUEST_URI'], 'action=create') === false) ? 'bg-gray-50 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' ?>">
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                 Riwayat Laporan
             </a>

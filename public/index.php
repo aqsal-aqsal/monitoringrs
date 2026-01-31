@@ -43,7 +43,6 @@ $routes = [
         '/master/barang/edit' => [BarangController::class, 'edit'],
         '/master/users' => [\App\Controllers\UserController::class, 'index'],
         '/laporan/saya' => [\App\Controllers\LaporanController::class, 'my'],
-        '/laporan/create' => [\App\Controllers\LaporanController::class, 'create'],
         '/laporan/admin' => [\App\Controllers\LaporanController::class, 'adminIndex'],
         '/maintenance' => [\App\Controllers\MaintenanceController::class, 'index'],
         '/maintenance/schedule' => [\App\Controllers\MaintenanceController::class, 'scheduleForm'],
